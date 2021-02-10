@@ -43,7 +43,7 @@ class CGAN:
         # The discriminator takes generated image and label as input and determines its validity
         validity = self.discriminator([img, label])
 
-        self.cgan_model = Model(input=[noise, label], output=validity)
+        self.cgan_model = Model([noise, label], validity)
         self.cgan_model.compile(loss=['binary_crossentropy'],
                                 optimizer=optimizer,
                                 metrics=['accuracy'])
@@ -114,7 +114,7 @@ class CGAN:
 
         x = Activation('sigmoid')(x)
         # input is conditioned by labels
-        generator = Model(input=[inputs, labels], output=x, name='generator')
+        generator = Model([inputs, labels], x, name='generator')
         return generator
 
     def train(self, x_train, y_train, epochs=1000, batch_size=128, sample_interval=50):
